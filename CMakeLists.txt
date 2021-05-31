@@ -388,6 +388,12 @@ cmake_dependent_option(OGRE_CONFIG_STATIC_LINK_CRT "Statically link the MS CRT d
 set(OGRE_LIB_DIRECTORY "lib${LIB_SUFFIX}" CACHE STRING "Install path for libraries, e.g. 'lib64' on some 64-bit Linux distros.")
 set(OGRE_BIN_DIRECTORY "bin" CACHE STRING "Install path for binaries")
 
+if (WIN32)
+  set(OGRE_PLUGIN_DIRECTORY "bin" CACHE STRING "Install path for plugins.")
+else()
+  set(OGRE_PLUGIN_DIRECTORY "lib${LIB_SUFFIX}/OGRE" CACHE STRING "Install path for plugins.")
+endif()
+
 cmake_dependent_option(OGRE_INSTALL_VSPROPS "Install Visual Studio Property Page." FALSE "MSVC" FALSE)
 if (OGRE_INSTALL_VSPROPS)
   configure_file(${OGRE_TEMPLATES_DIR}/OGRE.props.in ${PROJECT_BINARY_DIR}/OGRE.props)
