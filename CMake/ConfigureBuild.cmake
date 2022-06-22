@@ -156,18 +156,23 @@ if (BUILD_TYPE_LOWER STREQUAL "debug" AND WIN32)
 endif ()
 
 # Create the pkg-config package files on Unix systems
-if (UNIX)
+# if (UNIX)
   set(OGRE_PLUGIN_EXT ".so")
   set(OGRE_PAGING_ADDITIONAL_PACKAGES "")
   if (OGRE_STATIC)
     set(OGRE_PLUGIN_EXT ".a")
   endif ()
+  
+  if (WIN32)
+    set(OGRE_PLUGIN_PREFIX "")
+    set(OGRE_PLUGIN_EXT ".lib")
+  endif()
 
   set(OGRE_ADDITIONAL_LIBS "")
 
   set(OGRE_CFLAGS "")
-  set(OGRE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
-  if (OGRE_CONFIG_THREADS GREATER 0)
+  set(OGRE_PREFIX_PATH "")
+  if (UNIX AND OGRE_CONFIG_THREADS GREATER 0)
     set(OGRE_CFLAGS "-pthread")
     set(OGRE_ADDITIONAL_LIBS "${OGRE_ADDITIONAL_LIBS} -lpthread")
   endif ()
@@ -235,7 +240,7 @@ if (UNIX)
     configure_file(${OGRE_TEMPLATES_DIR}/OGRE-Bites.pc.in ${PROJECT_BINARY_DIR}/pkgconfig/OGRE-Bites.pc @ONLY)
     install(FILES ${PROJECT_BINARY_DIR}/pkgconfig/OGRE-Bites.pc DESTINATION ${OGRE_LIB_DIRECTORY}/pkgconfig)
   endif ()
-endif ()
+# endif ()
 
 if(OGRE_CONFIG_STATIC_LINK_CRT)
 #We statically link to reduce dependencies
